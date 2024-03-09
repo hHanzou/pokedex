@@ -37,6 +37,24 @@ const pokemonSchema = new Schema({
 // Criando um modelo baseado no esquema e especificando a coleção
 const Pokemon = mongoose.model("Pokemon", pokemonSchema, "pokemons");
 
+// Rota que retorna todos os pokemons
+app.post("/api/findAll", async (req, res) => {
+  try {
+    const pokemon = await Pokemon.find(
+      {},
+      { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
+    );
+
+    if (!pokemon) {
+      return res.status(404).json({ message: "No Pokemons :(" });
+    }
+
+    res.json(pokemon);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Rota para lidar com pedidos POST
 app.post("/api/find", async (req, res) => {
   let data = req.body;

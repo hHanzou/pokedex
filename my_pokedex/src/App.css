@@ -106,88 +106,82 @@ header div {
 main {
   padding-top: 85px;
 }
-
+/* search area */
 .search-section {
   margin: 5px auto 5px;
   width: 85%;
-  height: 100px;
+  height: 200px;
   border: 2px solid var(--color-gray-default);
   -webkit-border-radius: 18px;
   -moz-border-radius: 18px;
   border-radius: 18px;
 }
 
-.icon {
-  width: 50px;
-  height: 50px;
-
-  transition: fill 0.3s;
+.search-section form {
+  height: 100%;
+  width: 100%;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5%;
+  /* background-color: aqua; */
+  -webkit-border-radius: 18px;
+  -moz-border-radius: 18px;
+  border-radius: 18px;
 }
 
-.bug {
-  stroke: #ff0000;
-  fill: #ff0000;
+.types-area {
+  width: 30%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  height: 30px;
 }
-.dragon {
-  stroke: #ff0000;
-  fill: #ff0000;
+
+.types-area div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-.fighter {
-  stroke: #ff0000;
-  fill: #ff0000;
+
+.types-area div {
+  font-size: 11px;
 }
-.fire {
-  stroke: #ff0000;
-  fill: #ff0000;
+
+.input-area {
+  width: 30%;
+  display: flex;
+  gap: 5px;
 }
-.flying {
-  stroke: #ff0000;
-  fill: #ff0000;
+.input-area input {
+  width: 75%;
+  height: 35px;
+  border: 1px solid var(--color-gray-default);
+  padding: 5px;
+  font-size: 11px;
+  border-radius: 64px 64px 64px 64px;
+  -webkit-border-radius: 64px 64px 64px 64px;
+  -moz-border-radius: 64px 64px 64px 64px;
 }
-.ghost {
-  stroke: #ff0000;
-  fill: #ff0000;
+.input-area button {
+  padding: 5px;
+  width: 25%;
+  height: 35px;
+  border: none;
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--color-primary);
+
+  border-radius: 64px 64px 64px 64px;
+  -webkit-border-radius: 64px 64px 64px 64px;
+  -moz-border-radius: 64px 64px 64px 64px;
 }
-.grass {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.ground {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.ice {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.normal {
-  stroke: #949494;
-  fill: #949494;
-}
-.normal:hover {
-  stroke: #5c5c5c;
-  fill: #5c5c5c;
-}
-.poison {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.psycho {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.rock {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.thunder {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
-.water {
-  stroke: #ff0000;
-  fill: #ff0000;
-}
+
+/* content area */
+
 .container-cards {
   margin: 5px auto 10px;
   background-color: #4a9c5d;

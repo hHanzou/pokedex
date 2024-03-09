@@ -1,0 +1,93 @@
+.icon {
+  width: 25px;
+  height: 25px;
+
+  fill: gray;
+  stroke: gray;
+
+  transition: fill 0.3s;
+}
+
+.icon-no-stroke {
+  width: 25px;
+  height: 25px;
+
+  fill: gray;
+
+  transition: fill 0.3s;
+}
+
+.normal {
+  fill: #000000;
+  stroke: #000000;
+}
+
+.fire {
+  fill: #c71412;
+  stroke: #c71412;
+}
+
+.water {
+  fill: #004ec9;
+  stroke: #004ec9;
+}
+
+.electric {
+  fill: #feed08;
+  stroke: #feed08;
+}
+
+.grass {
+  fill: #05c112;
+  /* stroke: #05c112; */
+}
+
+.ice {
+  fill: #4de5f5;
+  stroke: #4de5f5;
+}
+
+.fighter {
+  fill: #ae3f04;
+  stroke: #ae3f04;
+}
+
+.poison {
+  fill: #915976;
+  stroke: #915976;
+}
+
+.ground {
+  fill: #945d2d;
+  stroke: #945d2d;
+}
+
+.flying {
+  fill: #29b2d1;
+  stroke: #29b2d1;
+}
+
+.bug {
+  fill: #aadd34;
+  stroke: #aadd34;
+}
+
+.psycho {
+  fill: #b34b71;
+  stroke: #b34b71;
+}
+
+.rock {
+  fill: #a69677;
+  /* stroke: #a69677; */
+}
+
+.ghost {
+  fill: #6c5694;
+  stroke: #6c5694;
+}
+
+.dragon {
+  fill: #943a32;
+  stroke: #943a32;
+}
