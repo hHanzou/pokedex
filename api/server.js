@@ -6,6 +6,18 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+
+function capitalize(str) {
+  // Verifica se a string não está vazia
+  if (str.length === 0) {
+    return str;
+  }
+
+  // Retorna a string com a primeira letra em maiúscula e o restante inalterado
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 // Conectando-se ao banco de dados MongoDB
 mongoose.connect("mongodb://localhost:27017/pokedex_db", {});
 const db = mongoose.connection;
@@ -25,60 +37,70 @@ const pokemonSchema = new Schema({
 // Criando um modelo baseado no esquema e especificando a coleção
 const Pokemon = mongoose.model("Pokemon", pokemonSchema, "pokemons");
 
-// Rota GET que busca todos os dados do MongoDB e os serve como resposta
-app.get("/api/pokemons/get/", async (req, res) => {
-  try {
-    const pokemons = await Pokemon.find(
-      {},
-      { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
-    );
-    res.json(pokemons);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// Rota para lidar com pedidos POST
+app.post("/api/find", async (req, res) => {
+  let data = req.body;
+  //TYPE AND NAME
+  if (data.name != null && data.type != null) {
+    data.name = capitalize(data.name);
+    data.type.forEach((t, i) => {
+      data.type[i] = capitalize(t);
+    });
+    const regex = new RegExp(`^${data.name}`);
+    try {
+      const pokemon = await Pokemon.find(
+        { name: regex, type: data.type },
+        { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
+      );
 
-// Rota GET que busca pelo nome
-app.get("/api/pokemons/get/:name", async (req, res) => {
-  const nomePokemon = req.params.name;
+      if (!pokemon) {
+        return res.status(404).json({ message: "Pokemon não encontrado." });
+      }
 
-  try {
-    const pokemon = await Pokemon.findOne(
-      { name: nomePokemon[0].toUpperCase() + nomePokemon.substring(1) },
-      { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
-    );
-
-    if (!pokemon) {
-      return res.status(404).json({ message: "Pokemon não encontrado." });
+      res.json(pokemon);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    res.json(pokemon);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
-});
+  //ONLY NAME
+  else if (data.name != null) {
+    data.name = capitalize(data.name);
+    const regex = new RegExp(`^${data.name}`);
+    try {
+      const pokemon = await Pokemon.find(
+        { name: regex },
+        { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
+      );
 
-// Rota GET que busca pelos tipos especificos
-app.get("/api/pokemons/get/type/:type", async (req, res) => {
-  const types = req.params.type
-    .split("+")
-    .map((type) => type.charAt(0).toUpperCase() + type.slice(1));
+      if (!pokemon) {
+        return res.status(404).json({ message: "Pokemon não encontrado." });
+      }
 
-  console.log(types);
-
-  try {
-    const pokemon = await Pokemon.find(
-      { type: types },
-      { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
-    );
-
-    if (!pokemon) {
-      return res.status(404).json({ message: "Pokemon não encontrado." });
+      res.json(pokemon);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
+  }
+  //ONLY TYPE
+  else if (data.type != null) {
+    data.type.forEach((t, i) => {
+      data.type[i] = capitalize(t);
+    });
+    console.log(data.type);
+    try {
+      const pokemon = await Pokemon.find(
+        { type: data.type },
+        { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
+      );
 
-    res.json(pokemon);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+      if (!pokemon) {
+        return res.status(404).json({ message: "Pokemon não encontrado." });
+      }
+
+      res.json(pokemon);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 });
 

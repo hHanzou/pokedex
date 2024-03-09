@@ -1,12 +1,10 @@
-import { useState } from "react";
+// import { useState } from "react";
 import pokeballImage from "./assets/pokeball.png";
 import NormalIcon from "./components/icons/normal";
 
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <header>
