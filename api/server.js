@@ -1,5 +1,6 @@
 // Importando os módulos necessários
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 
 // Configurando o express
@@ -7,6 +8,7 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 function capitalize(str) {
   // Verifica se a string não está vazia
@@ -38,7 +40,7 @@ const pokemonSchema = new Schema({
 const Pokemon = mongoose.model("Pokemon", pokemonSchema, "pokemons");
 
 // Rota que retorna todos os pokemons
-app.post("/api/findAll", async (req, res) => {
+app.post("/api/get", async (req, res) => {
   try {
     const pokemon = await Pokemon.find(
       {},
@@ -58,8 +60,14 @@ app.post("/api/findAll", async (req, res) => {
 // Rota para lidar com pedidos POST
 app.post("/api/find", async (req, res) => {
   let data = req.body;
+  console.log(data);
   //TYPE AND NAME
-  if (data.name != null && data.type != null) {
+  if (
+    data.name != null &&
+    data.name != "" &&
+    data.type != null &&
+    data.type != []
+  ) {
     data.name = capitalize(data.name);
     data.type.forEach((t, i) => {
       data.type[i] = capitalize(t);
@@ -67,21 +75,21 @@ app.post("/api/find", async (req, res) => {
     const regex = new RegExp(`^${data.name}`);
     try {
       const pokemon = await Pokemon.find(
-        { name: regex, type: data.type },
+        { name: regex, type: { $all: data.type } },
         { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
       );
 
       if (!pokemon) {
-        return res.status(404).json({ message: "Pokemon não encontrado." });
+        return res.status(404).json({ message: "No pokemons :(" });
       }
 
-      res.json(pokemon);
+      return res.json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
   //ONLY NAME
-  else if (data.name != null) {
+  else if (data.name != null && data.name != "") {
     data.name = capitalize(data.name);
     const regex = new RegExp(`^${data.name}`);
     try {
@@ -91,31 +99,31 @@ app.post("/api/find", async (req, res) => {
       );
 
       if (!pokemon) {
-        return res.status(404).json({ message: "Pokemon não encontrado." });
+        return res.status(404).json({ message: "No pokemons :(" });
       }
 
-      res.json(pokemon);
+      return res.json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
   //ONLY TYPE
-  else if (data.type != null) {
+  else if (data.type != null && data.type != []) {
     data.type.forEach((t, i) => {
       data.type[i] = capitalize(t);
     });
     console.log(data.type);
     try {
       const pokemon = await Pokemon.find(
-        { type: data.type },
+        { type: { $all: data.type } },
         { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
       );
 
       if (!pokemon) {
-        return res.status(404).json({ message: "Pokemon não encontrado." });
+        return res.status(404).json({ message: "No pokemons :(" });
       }
-
-      res.json(pokemon);
+      console.log(pokemon);
+      return res.json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
