@@ -90,7 +90,6 @@ app.post("/api/find", async (req, res) => {
   }
   //ONLY NAME
   else if (data.name != null && data.name != "") {
-    console.log("caiu aqui");
     data.name = capitalize(data.name);
     const regex = new RegExp(`^${data.name}`);
     try {
@@ -123,7 +122,7 @@ app.post("/api/find", async (req, res) => {
       if (!pokemon) {
         return res.status(404).json({ message: "No pokemons :(" });
       }
-      console.log(pokemon);
+      // console.log(pokemon);
       return res.json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });

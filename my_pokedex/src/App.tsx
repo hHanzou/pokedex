@@ -97,7 +97,7 @@ function App() {
         console.log("Error ", e);
       }
     }
-  });
+  }, [pokemons]);
 
   return (
     <>
