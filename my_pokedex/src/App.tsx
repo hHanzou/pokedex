@@ -103,13 +103,8 @@ function App() {
     <>
       <header>
         <div>
-          <a href="/">
-            <img
-              width="38"
-              height="38"
-              src={pokeballImage}
-              className="pokeball-icon"
-            />
+          <a className="pokeball-a" href="/">
+            <img src={pokeballImage} className="pokeball-icon" />
           </a>
           <a href="/" className="nav-title">
             my_pokedex
@@ -138,6 +133,7 @@ function App() {
               type: string[];
             }) => (
               <Card
+                key={pokemon.id}
                 displayTypesWithColor={displayTypesWithColor}
                 pokemon={pokemon}
               ></Card>
