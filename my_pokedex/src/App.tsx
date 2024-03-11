@@ -1,56 +1,103 @@
-// import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import React from "react";
 import pokeballImage from "./assets/pokeball.png";
 import SearchForm from "./components/SearchField";
-
+import Card from "./components/Card";
 import "./App.css";
-import { ChangeEvent, useState } from "react";
+
+interface Pokemon {
+  name: string;
+  img: string;
+  id: string;
+  type: string[];
+}
 
 function App() {
   const [activeIcons, setActiveIcons] = useState<string[]>([]);
   const [pokemonName, setPokemonName] = useState<string>("");
-  const [pokemons, setPokemons] = useState({});
-  const handlePokemonName = (event: ChangeEvent<HTMLInputElement>) => {
-    setPokemonName(event.target.value);
+  const [hasFetchedData, setHasFetchedData] = useState(false);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  const displayTypesWithColor = (type: string[]): React.ReactNode[] => {
+    return type.map((t, index) => (
+      <React.Fragment key={t.toLowerCase()}>
+        <i className={`${t.toLowerCase()}-color`}>{t}</i>
+        {index < type.length - 1 && ", "}
+      </React.Fragment>
+    ));
   };
 
-  const dragonite = {
-    id: "149",
-    name: "Dragonite",
-    img: "http://img.pokemondb.net/artwork/dragonite.jpg",
-    type: ["Dragon", "Flying"],
+  const handlePokemonName = (event: ChangeEvent<HTMLInputElement>) => {
+    setPokemonName(event.target.value);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await postFind();
+      const response = await postFind("find");
       console.log(response);
     } catch (error) {
       console.error("Erro ao enviar POST:", error);
     }
   };
 
-  const postFind = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/api/find", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: pokemonName, type: activeIcons }),
-      });
+  const postFind = async (req: string) => {
+    if (pokemonName === "" && activeIcons.length === 0) {
+      req = "getall";
+    }
+    if (req === "find") {
+      try {
+        const res = await fetch("http://localhost:3000/api/find", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: pokemonName, type: activeIcons }),
+        });
 
-      if (!res.ok) {
-        throw new Error("Erro ao fazer POST");
+        if (!res.ok) {
+          throw new Error("Erro ao fazer POST");
+        }
+
+        const dataJson = await res.json();
+        await setPokemons(dataJson);
+        console.log(dataJson);
+      } catch (err) {
+        console.error("Error:", err);
       }
+    } else if (req === "getall") {
+      try {
+        const res = await fetch("http://localhost:3000/api/getall", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({}),
+        });
 
-      const dataJson = await res.json();
-      await setPokemons(dataJson);
-      console.log(dataJson);
-    } catch (err) {
-      console.error("Error:", err);
+        if (!res.ok) {
+          throw new Error("Erro ao fazer POST");
+        }
+
+        const dataJson = await res.json();
+        await setPokemons(dataJson);
+        console.log(dataJson);
+      } catch (err) {
+        console.error("Error:", err);
+      }
     }
   };
+
+  useEffect(() => {
+    if (hasFetchedData === false) {
+      try {
+        setHasFetchedData(true);
+        postFind("getall");
+      } catch (e) {
+        console.log("Error ", e);
+      }
+    }
+  });
 
   return (
     <>
@@ -68,6 +115,9 @@ function App() {
             my_pokedex
           </a>
         </div>
+        <div>
+          <i>developed by hHanzou</i>
+        </div>
       </header>
       <main>
         <section className="search-section">
@@ -80,7 +130,19 @@ function App() {
           ></SearchForm>
         </section>
         <div className="container-cards">
-          <div className="card"></div>
+          {pokemons.map(
+            (pokemon: {
+              name: string;
+              img: string;
+              id: string;
+              type: string[];
+            }) => (
+              <Card
+                displayTypesWithColor={displayTypesWithColor}
+                pokemon={pokemon}
+              ></Card>
+            )
+          )}
         </div>
       </main>
     </>

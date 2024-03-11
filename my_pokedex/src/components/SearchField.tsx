@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import IconType from "./icons";
+import IconType from "./Icons";
 
 interface SearchFormProps {
   activeIcons: string[];
@@ -36,6 +36,15 @@ const SearchForm: React.FC<SearchFormProps> = ({
             setActiveIcons={setActiveIcons}
           ></IconType>
           dragon
+        </div>
+        <div>
+          <input type="hidden" name="thunder" id="" />
+          <IconType
+            type="electric"
+            activeIcons={activeIcons}
+            setActiveIcons={setActiveIcons}
+          ></IconType>
+          electric
         </div>
         <div>
           <input type="hidden" name="fighter" id="" />
@@ -137,13 +146,13 @@ const SearchForm: React.FC<SearchFormProps> = ({
           rock
         </div>
         <div>
-          <input type="hidden" name="thunder" id="" />
+          <input type="hidden" name="steel" id="" />
           <IconType
-            type="electric"
+            type="steel"
             activeIcons={activeIcons}
             setActiveIcons={setActiveIcons}
           ></IconType>
-          electric
+          steel
         </div>
         <div>
           <input type="hidden" name="water" id="" />

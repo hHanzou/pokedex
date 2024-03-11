@@ -40,7 +40,7 @@ const pokemonSchema = new Schema({
 const Pokemon = mongoose.model("Pokemon", pokemonSchema, "pokemons");
 
 // Rota que retorna todos os pokemons
-app.post("/api/get", async (req, res) => {
+app.post("/api/getall", async (req, res) => {
   try {
     const pokemon = await Pokemon.find(
       {},
@@ -66,7 +66,7 @@ app.post("/api/find", async (req, res) => {
     data.name != null &&
     data.name != "" &&
     data.type != null &&
-    data.type != []
+    data.type.length > 0
   ) {
     data.name = capitalize(data.name);
     data.type.forEach((t, i) => {
@@ -90,6 +90,7 @@ app.post("/api/find", async (req, res) => {
   }
   //ONLY NAME
   else if (data.name != null && data.name != "") {
+    console.log("caiu aqui");
     data.name = capitalize(data.name);
     const regex = new RegExp(`^${data.name}`);
     try {
@@ -108,7 +109,7 @@ app.post("/api/find", async (req, res) => {
     }
   }
   //ONLY TYPE
-  else if (data.type != null && data.type != []) {
+  else if (data.type != null && data.type.length > 0) {
     data.type.forEach((t, i) => {
       data.type[i] = capitalize(t);
     });

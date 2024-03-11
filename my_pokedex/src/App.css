@@ -74,7 +74,11 @@ body {
 
 header {
   position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
+  background-color: var(--color-primary);
   -webkit-box-shadow: 0px 4px 12px -5px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 4px 12px -5px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 4px 12px -5px rgba(0, 0, 0, 0.75);
@@ -84,9 +88,12 @@ header div {
   align-items: center;
   display: flex;
   height: 80px;
-  width: 100%;
-  background-color: var(--color-primary);
 }
+
+header div i {
+  margin-right: 30px;
+}
+
 .pokeball-icon {
   margin: 0 10px 0 50px;
 }
@@ -100,8 +107,6 @@ header div {
 }
 
 /* ////////// */
-
-/* content */
 
 main {
   padding-top: 85px;
@@ -124,14 +129,12 @@ main {
   flex-direction: row;
   justify-content: center;
   gap: 5%;
-  /* background-color: aqua; */
   -webkit-border-radius: 18px;
   -moz-border-radius: 18px;
   border-radius: 18px;
 }
 
 .types-area {
-  /* background-color: aqua; */
   width: 30%;
   display: flex;
   flex-wrap: wrap;
@@ -206,13 +209,124 @@ main {
 /* content area */
 
 .container-cards {
-  margin: 5px auto 10px;
-  background-color: #4a9c5d;
+  margin: 10px auto 10px;
+  /* background-color: #4a9c5d; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px; /* Espaçamento entre os cartões */
   width: 85%;
-  height: 100px;
+  gap: 20px;
 }
 
 .card {
+  background-color: #f5f5f5;
+  border: 2px solid var(--color-gray-default);
+  min-width: 200px;
+  /* height: 350px; */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+
+  border-radius: 22px 22px 22px 22px;
+  -webkit-border-radius: 22px 22px 22px 22px;
+  -moz-border-radius: 22px 22px 22px 22px;
+}
+
+.card .img-div {
+  width: 85%;
+}
+.card .img-div img {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.card .info-div {
+  width: 85%;
+  margin-top: 10px;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.card ul {
+  list-style: none;
+}
+
+.card ul li {
+  margin-bottom: 3px;
+}
+
+.card ul li i {
+  font-style: normal;
+}
+
+/* ////////// */
+
+/* card types color */
+
+.normal-color {
+  color: #000000;
+}
+
+.fire-color {
+  color: #c71412;
+}
+
+.water-color {
+  color: #004ec9;
+}
+
+.electric-color {
+  color: #feed08;
+}
+
+.grass-color {
+  color: #05c112;
+}
+
+.ice-color {
+  color: #4de5f5;
+}
+
+.fighting-color {
+  color: #ae3f04;
+}
+
+.poison-color {
+  color: #915976;
+}
+
+.ground-color {
+  color: #945d2d;
+}
+
+.flying-color {
+  color: #29b2d1;
+}
+
+.bug-color {
+  color: #aadd34;
+}
+
+.psychic-color {
+  color: #b34b71;
+}
+
+.rock-color {
+  color: #a69677;
+}
+
+.ghost-color {
+  color: #6c5694;
+}
+
+.dragon-color {
+  color: #943a32;
+}
+
+.steel-color {
+  color: #b5b8b1;
 }
 
 /* ////////// */

@@ -13,6 +13,7 @@ import PsychicIcon from "../icons/psychic";
 import RockIcon from "../icons/rock";
 import ElectricIcon from "../icons/electric";
 import WaterIcon from "../icons/water";
+import SteelIcon from "../icons/steel";
 import "./Icons.css";
 
 const icons = {
@@ -31,6 +32,7 @@ const icons = {
   rock: RockIcon,
   electric: ElectricIcon,
   water: WaterIcon,
+  steel: SteelIcon,
 };
 
 type IconProps = {
