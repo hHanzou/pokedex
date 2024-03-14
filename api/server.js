@@ -28,16 +28,9 @@ db.once("open", () => {
   console.log("Conectado ao banco de dados MongoDB.");
 });
 
-const Schema = mongoose.Schema;
-const pokemonSchema = new Schema({
-  id: String,
-  name: String,
-  img: String,
-  type: Array,
-});
-
-// Criando um modelo baseado no esquema e especificando a coleção
-const Pokemon = mongoose.model("Pokemon", pokemonSchema, "pokemons");
+//Models
+const Trainer = require("./models/Trainer");
+const Pokemon = require("./models/Pokemon");
 
 // Rota que retorna todos os pokemons
 app.post("/api/getall", async (req, res) => {

@@ -1,31 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import React from "react";
 import pokeballImage from "./assets/pokeball.png";
-import SearchForm from "./components/SearchField";
-import Card from "./components/Card";
+import Pokemon from "./interfaces";
+import PokedexContent from "./pages/Pokedex";
 import "./App.css";
-
-interface Pokemon {
-  name: string;
-  img: string;
-  id: string;
-  type: string[];
-}
 
 function App() {
   const [activeIcons, setActiveIcons] = useState<string[]>([]);
   const [pokemonName, setPokemonName] = useState<string>("");
   const [hasFetchedData, setHasFetchedData] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-
-  const displayTypesWithColor = (type: string[]): React.ReactNode[] => {
-    return type.map((t, index) => (
-      <React.Fragment key={t.toLowerCase()}>
-        <i className={`${t.toLowerCase()}-color`}>{t}</i>
-        {index < type.length - 1 && ", "}
-      </React.Fragment>
-    ));
-  };
 
   const handlePokemonName = (event: ChangeEvent<HTMLInputElement>) => {
     setPokemonName(event.target.value);
@@ -114,33 +98,14 @@ function App() {
           <i>developed by hHanzou</i>
         </div>
       </header>
-      <main>
-        <section className="search-section">
-          <SearchForm
-            activeIcons={activeIcons}
-            pokemonName={pokemonName}
-            setActiveIcons={setActiveIcons}
-            handleSubmit={handleSubmit}
-            handlePokemonName={handlePokemonName}
-          ></SearchForm>
-        </section>
-        <div className="container-cards">
-          {pokemons.map(
-            (pokemon: {
-              name: string;
-              img: string;
-              id: string;
-              type: string[];
-            }) => (
-              <Card
-                key={pokemon.id}
-                displayTypesWithColor={displayTypesWithColor}
-                pokemon={pokemon}
-              ></Card>
-            )
-          )}
-        </div>
-      </main>
+      <PokedexContent
+        pokemons={pokemons}
+        pokemonName={pokemonName}
+        activeIcons={activeIcons}
+        setActiveIcons={setActiveIcons}
+        handlePokemonName={handlePokemonName}
+        handleSubmit={handleSubmit}
+      ></PokedexContent>
     </>
   );
 }

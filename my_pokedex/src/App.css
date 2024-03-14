@@ -100,7 +100,7 @@ header div {
 
 header div i {
   margin-right: 30px;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .pokeball-icon {
@@ -187,7 +187,7 @@ main {
   width: 30%;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
 }
 
 .types-area div {
