@@ -228,10 +228,14 @@ main {
   font-size: 18px;
   font-weight: 500;
   background-color: var(--color-primary);
-
   border-radius: 64px 64px 64px 64px;
   -webkit-border-radius: 64px 64px 64px 64px;
   -moz-border-radius: 64px 64px 64px 64px;
+}
+
+.input-area button:hover {
+  background-color: #81182c;
+  transition: ease-in-out 0.2s;
 }
 
 @media only screen and (max-width: 600px) {
@@ -265,6 +269,10 @@ main {
   gap: 20px; /* Espaçamento entre os cartões */
   width: 85%;
   gap: 20px;
+}
+
+.container-cards h2 {
+  font-size: 38px;
 }
 
 .card {

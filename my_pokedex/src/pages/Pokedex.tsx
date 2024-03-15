@@ -2,11 +2,13 @@ import React, { ChangeEvent } from "react";
 import Pokemon from "../interfaces";
 import SearchForm from "../components/SearchField";
 import Card from "../components/Card";
+import pikachu404 from "../assets/pikachu-crying.gif";
 
 interface PokedexProps {
   pokemons: Pokemon[];
   activeIcons: string[];
   pokemonName: string;
+  hasPokemons: boolean;
   setActiveIcons: React.Dispatch<React.SetStateAction<string[]>>;
   handlePokemonName: (event: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent) => Promise<void>;
@@ -25,6 +27,7 @@ const PokedexContent: React.FC<PokedexProps> = ({
   pokemons,
   activeIcons,
   pokemonName,
+  hasPokemons,
   setActiveIcons,
   handleSubmit,
   handlePokemonName,
@@ -41,19 +44,26 @@ const PokedexContent: React.FC<PokedexProps> = ({
         ></SearchForm>
       </section>
       <div className="container-cards">
-        {pokemons.map(
-          (pokemon: {
-            name: string;
-            img: string;
-            id: string;
-            type: string[];
-          }) => (
-            <Card
-              key={pokemon.id}
-              displayTypesWithColor={displayTypesWithColor}
-              pokemon={pokemon}
-            ></Card>
+        {hasPokemons ? (
+          pokemons.map(
+            (pokemon: {
+              name: string;
+              img: string;
+              id: string;
+              type: string[];
+            }) => (
+              <Card
+                key={pokemon.id}
+                displayTypesWithColor={displayTypesWithColor}
+                pokemon={pokemon}
+              ></Card>
+            )
           )
+        ) : (
+          <div className="pikachu404">
+            <h2>No pokemons :(</h2>
+            <img src={pikachu404} alt="pikachu404" />
+          </div>
         )}
       </div>
     </main>

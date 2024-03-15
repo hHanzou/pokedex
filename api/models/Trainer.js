@@ -5,7 +5,9 @@ const Trainer = mongoose.model(
   {
     name: String,
     email: String,
-    senha: String,
+    password: String,
+    pokemons_caught: [String],
+    pokemons_wishlist: [String],
   },
   "trainers_db"
 );

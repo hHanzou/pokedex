@@ -9,6 +9,7 @@ function App() {
   const [activeIcons, setActiveIcons] = useState<string[]>([]);
   const [pokemonName, setPokemonName] = useState<string>("");
   const [hasFetchedData, setHasFetchedData] = useState(false);
+  const [hasPokemons, setHasPokemons] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   const handlePokemonName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,13 +41,16 @@ function App() {
         });
 
         if (!res.ok) {
+          setHasPokemons(false);
           throw new Error("Erro ao fazer POST");
         }
 
+        setHasPokemons(true);
         const dataJson = await res.json();
         await setPokemons(dataJson);
         console.log(dataJson);
       } catch (err) {
+        setHasPokemons(false);
         console.error("Error:", err);
       }
     } else if (req === "getall") {
@@ -60,13 +64,16 @@ function App() {
         });
 
         if (!res.ok) {
+          setHasPokemons(false);
           throw new Error("Erro ao fazer POST");
         }
 
+        setHasPokemons(true);
         const dataJson = await res.json();
         await setPokemons(dataJson);
         console.log(dataJson);
       } catch (err) {
+        setHasPokemons(false);
         console.error("Error:", err);
       }
     }
@@ -100,6 +107,7 @@ function App() {
       </header>
       <PokedexContent
         pokemons={pokemons}
+        hasPokemons={hasPokemons}
         pokemonName={pokemonName}
         activeIcons={activeIcons}
         setActiveIcons={setActiveIcons}
