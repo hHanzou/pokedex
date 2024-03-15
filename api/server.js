@@ -1,4 +1,3 @@
-// Importando os módulos necessários
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -6,7 +5,6 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-// Configurando o express
 const app = express();
 const PORT = 3000;
 
@@ -14,12 +12,10 @@ app.use(express.json());
 app.use(cors());
 
 function capitalize(str) {
-  // Verifica se a string não está vazia
   if (str.length === 0) {
     return str;
   }
 
-  // Retorna a string com a primeira letra em maiúscula e o restante inalterado
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -106,6 +102,79 @@ app.post("/auth/register", async (req, res) => {
   }
 });
 
+//login user
+app.post("/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  // validations
+  if (!email || email === "") {
+    return res.status(422).json({ msg: "field 'email' is required" });
+  }
+  if (!password || password === "") {
+    return res.status(422).json({ msg: "field 'password' is required" });
+  }
+
+  // check if Trainer exists
+  const trainer = await Trainer.findOne({ email: email });
+
+  if (!trainer) {
+    return res.status(404).json({ msg: "user does not exist" });
+  }
+
+  // check password
+  const checkPassword = await bcrypt.compare(password, trainer.password);
+  if (!checkPassword) {
+    return res.status(401).json({ msg: "password invalid" });
+  }
+
+  try {
+    const secret = process.env.SECRET;
+    const token = jwt.sign({ id: trainer._id }, secret);
+
+    res.status(200).json({ msg: "auth done", token });
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ msg: "server error, try again later" });
+  }
+});
+
+// check token
+function checkToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ msg: "access denied" });
+  }
+
+  try {
+    const secret = process.env.SECRET;
+    jwt.verify(token, secret);
+    next();
+  } catch (err) {
+    res.status(400).json({ msg: "invalid token" });
+  }
+}
+
+// private route
+app.get("/trainer/:id", checkToken, async (req, res) => {
+  const id = req.params.id;
+
+  // check if trainer exists
+  try {
+    const trainer = await Trainer.findById(id, "-password");
+
+    if (!trainer || trainer == null) {
+      return res.status(404).json({ msg: "user not found" });
+    }
+
+    res.status(200).json({ trainer });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ msg: "user not found" });
+  }
+});
+
 // return all pokemons
 app.post("/api/getall", async (req, res) => {
   try {
@@ -114,7 +183,7 @@ app.post("/api/getall", async (req, res) => {
       { _id: 0, stats: 0, moves: 0, damages: 0, misc: 0 }
     );
 
-    if (!pokemon) {
+    if (!pokemon || pokemon.length == 0) {
       return res.status(404).json({ message: "No Pokemons :(" });
     }
 
@@ -124,7 +193,7 @@ app.post("/api/getall", async (req, res) => {
   }
 });
 
-// Rota para lidar com pedidos POST
+// filter pokemons
 app.post("/api/find", async (req, res) => {
   let data = req.body;
   console.log(data);
@@ -150,7 +219,7 @@ app.post("/api/find", async (req, res) => {
         return res.status(404).json({ message: "No pokemons :(" });
       }
 
-      return res.json(pokemon);
+      return res.status(200).json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -169,7 +238,7 @@ app.post("/api/find", async (req, res) => {
         return res.status(404).json({ message: "No pokemons :(" });
       }
 
-      return res.json(pokemon);
+      return res.status(200).json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -190,7 +259,7 @@ app.post("/api/find", async (req, res) => {
         return res.status(404).json({ message: "No pokemons :(" });
       }
       // console.log(pokemon);
-      return res.json(pokemon);
+      return res.status(200).json(pokemon);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
