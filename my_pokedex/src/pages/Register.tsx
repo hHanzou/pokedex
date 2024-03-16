@@ -1,7 +1,7 @@
 import React from "react";
-import loginMethod from "../controller/login";
+import registerMethod from "../controller/register";
 
-const LoginPage: React.FC = ({}) => {
+const RegisterPage: React.FC = ({}) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -13,15 +13,20 @@ const LoginPage: React.FC = ({}) => {
       values[key] = value as string;
     });
     console.log(values);
-    loginMethod(values);
+    registerMethod(values);
   };
+
   return (
     <main>
       <div className="div-link">
-        <a href="/register">register</a>
+        <a href="/login">login</a>
       </div>
       <div className="reglog-container">
         <form onSubmit={handleSubmit}>
+          <div>
+            <label>name:</label>
+            <input type="text" name="name" id="name" />
+          </div>
           <div>
             <label>email:</label>
             <input type="text" name="email" id="email" />
@@ -31,7 +36,11 @@ const LoginPage: React.FC = ({}) => {
             <input type="text" name="password" id="password" />
           </div>
           <div>
-            <button type="submit">login</button>
+            <label>confirm password:</label>
+            <input type="text" name="passwordConfirm" id="passwordConfirm" />
+          </div>
+          <div>
+            <button type="submit">register</button>
           </div>
         </form>
       </div>
@@ -39,4 +48,4 @@ const LoginPage: React.FC = ({}) => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

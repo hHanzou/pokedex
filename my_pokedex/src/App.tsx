@@ -1,16 +1,44 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  redirect,
+} from "react-router-dom";
 import pokeballImage from "./assets/pokeball.png";
 import Pokemon from "./interfaces";
-import PokedexContent from "./pages/Pokedex";
+import Pokedex from "./pages/Pokedex";
+import findMethod from "./controller/find";
+import getAllMethod from "./controller/getAll";
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
 import "./App.css";
 
 function App() {
+  const [token, setToken] = useState("");
   const [activeIcons, setActiveIcons] = useState<string[]>([]);
   const [pokemonName, setPokemonName] = useState<string>("");
   const [hasFetchedData, setHasFetchedData] = useState(false);
   const [hasPokemons, setHasPokemons] = useState(false);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  const currentPath = window.location.pathname;
+
+  const isUserAuthenticated = () => {
+    return localStorage.getItem("token") !== null;
+  };
+
+  const saveToken = (token: string) => {
+    localStorage.setItem("token", token);
+    setToken(token);
+  };
+
+  const removeToken = () => {
+    localStorage.removeItem("token");
+    localStorage.clear();
+    setToken("");
+  };
 
   const handlePokemonName = (event: ChangeEvent<HTMLInputElement>) => {
     setPokemonName(event.target.value);
@@ -19,71 +47,23 @@ function App() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await postFind("find");
+      const response = await findMethod(
+        pokemonName,
+        activeIcons,
+        setHasPokemons,
+        setPokemons
+      );
       console.log(response);
     } catch (error) {
       console.error("Erro ao enviar POST:", error);
     }
   };
 
-  const postFind = async (req: string) => {
-    if (pokemonName === "" && activeIcons.length === 0) {
-      req = "getall";
-    }
-    if (req === "find") {
-      try {
-        const res = await fetch("http://localhost:3000/api/find", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: pokemonName, type: activeIcons }),
-        });
-
-        if (!res.ok) {
-          setHasPokemons(false);
-          throw new Error("Erro ao fazer POST");
-        }
-
-        setHasPokemons(true);
-        const dataJson = await res.json();
-        await setPokemons(dataJson);
-        console.log(dataJson);
-      } catch (err) {
-        setHasPokemons(false);
-        console.error("Error:", err);
-      }
-    } else if (req === "getall") {
-      try {
-        const res = await fetch("http://localhost:3000/api/getall", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        });
-
-        if (!res.ok) {
-          setHasPokemons(false);
-          throw new Error("Erro ao fazer POST");
-        }
-
-        setHasPokemons(true);
-        const dataJson = await res.json();
-        await setPokemons(dataJson);
-        console.log(dataJson);
-      } catch (err) {
-        setHasPokemons(false);
-        console.error("Error:", err);
-      }
-    }
-  };
-
   useEffect(() => {
-    if (hasFetchedData === false) {
+    if (hasFetchedData === false && currentPath === "/") {
       try {
         setHasFetchedData(true);
-        postFind("getall");
+        getAllMethod(setHasPokemons, setPokemons);
       } catch (e) {
         console.log("Error ", e);
       }
@@ -105,15 +85,27 @@ function App() {
           <i>developed by hHanzou</i>
         </div>
       </header>
-      <PokedexContent
-        pokemons={pokemons}
-        hasPokemons={hasPokemons}
-        pokemonName={pokemonName}
-        activeIcons={activeIcons}
-        setActiveIcons={setActiveIcons}
-        handlePokemonName={handlePokemonName}
-        handleSubmit={handleSubmit}
-      ></PokedexContent>
+
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Pokedex
+                pokemons={pokemons}
+                activeIcons={activeIcons}
+                pokemonName={pokemonName}
+                hasPokemons={hasPokemons}
+                setActiveIcons={setActiveIcons}
+                handlePokemonName={handlePokemonName}
+                handleSubmit={handleSubmit}
+              />
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }

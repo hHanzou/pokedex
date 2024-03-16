@@ -1,5 +1,6 @@
+/* TODO more style on site */
+/* TODO more effects on site */
 /* default vars */
-
 :root {
   --color-primary: #9a031e;
   --color-primary-hover: #2086c2;
@@ -38,12 +39,6 @@
   --color-gray-7: #4b4b4b;
   --color-gray-8: #323232;
   --color-gray-9: #191919;
-
-  --font-primary: sans-serif;
-  --font-headings: "Roboto Slab", serif;
-
-  --spacing-gutter-medium: 3rem;
-  --spacing-gutter-large: 4rem;
 }
 
 /* ////////// */
@@ -259,7 +254,7 @@ main {
     min-width: 60px;
   }
 }
-/* content area */
+/* pokedex area */
 
 .container-cards {
   margin: 10px auto 10px;
@@ -316,6 +311,78 @@ main {
 
 .card ul li i {
   font-style: normal;
+}
+
+/* ////////// */
+
+/* register area */
+.reglog-container {
+  /* background-color: pink; */
+  margin: 0 auto;
+  width: 85%;
+  display: flex;
+  justify-content: center;
+}
+
+.div-link {
+  width: 100%;
+  text-align: end;
+  margin-top: 20px;
+}
+.div-link a {
+  font-size: 24px;
+  text-decoration: none;
+  margin: 0 5%;
+  border: 0.5px solid black;
+  padding: 3px;
+}
+
+.reglog-container form {
+  margin-top: 30px;
+  width: 50%;
+  max-width: 500px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  background-color: #f5f5f5;
+  border: 1px solid black;
+  padding: 30px;
+  border-radius: 20px 20px 20px 20px;
+  -webkit-border-radius: 20px 20px 20px 20px;
+  -moz-border-radius: 20px 20px 20px 20px;
+  -webkit-box-shadow: 2px 10px 22px -8px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 10px 22px -8px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 10px 22px -8px rgba(0, 0, 0, 0.75);
+}
+.reglog-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* background-color: green; */
+}
+.reglog-container form div input {
+  background-color: #e6e6e6;
+  font-size: 20px;
+  width: 100;
+}
+.reglog-container form div label {
+  font-size: 25px;
+}
+.reglog-container form div button {
+  color: white;
+  background-color: var(--color-primary);
+  font-size: 25px;
+  height: 40px;
+  transition: ease-in-out 0.4s;
+  border: 1px solid black;
+  border-radius: 46px 46px 46px 46px;
+  -webkit-border-radius: 46px 46px 46px 46px;
+  -moz-border-radius: 46px 46px 46px 46px;
+}
+.reglog-container form div button:hover {
+  transition: ease-in-out 0.4s;
+  background-color: rgb(153, 65, 65);
 }
 
 /* ////////// */
