@@ -1,24 +1,20 @@
+import axios from "axios";
+
 const getAllMethod = async (
   setHasPokemons: (value: React.SetStateAction<boolean>) => void,
   setPokemons: (value: React.SetStateAction<any[]>) => void
 ) => {
   try {
-    const res = await fetch("http://localhost:3000/api/getall", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
-    });
+    const response = await axios.post("http://localhost:3000/api/getall", {});
 
-    if (!res.ok) {
+    if (response.status !== 200) {
       setHasPokemons(false);
       throw new Error("Erro ao fazer POST");
     }
 
     setHasPokemons(true);
-    const dataJson = await res.json();
-    await setPokemons(dataJson);
+    const dataJson = response.data;
+    setPokemons(dataJson);
     console.log(dataJson);
   } catch (err) {
     setHasPokemons(false);

@@ -1,21 +1,15 @@
+import axios from "axios";
+
 const loginMethod = async (json: {}) => {
   try {
-    const res = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    });
+    const response = await axios.post("http://localhost:3000/auth/login", json);
 
-    if (!res.ok) {
-      if (!res.ok) {
-        const errorResponse = await res.json();
-        throw new Error(errorResponse.msg);
-      }
+    if (response.status !== 200) {
+      const errorResponse = response.data;
+      throw new Error(errorResponse.msg);
     }
 
-    const data = await res.json();
+    const data = response.data;
     console.log(data);
   } catch (err) {
     console.error("Error:", err);

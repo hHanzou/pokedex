@@ -1,18 +1,18 @@
+import axios from "axios";
+
 const registerMethod = async (json: {}) => {
   try {
-    const res = await fetch("http://localhost:3000/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    });
+    const response = await axios.post(
+      "http://localhost:3000/auth/register",
+      json
+    );
 
-    if (!res.ok) {
-      const errorResponse = await res.json();
+    if (response.status !== 200) {
+      const errorResponse = response.data;
       throw new Error(errorResponse.msg);
     }
-    await res.json();
+
+    console.log(response.data);
     window.location.replace("/login");
   } catch (err) {
     console.error("Error:", err);

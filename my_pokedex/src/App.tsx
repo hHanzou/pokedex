@@ -1,12 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  redirect,
-} from "react-router-dom";
+
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import pokeballImage from "./assets/pokeball.png";
+
 import Pokemon from "./interfaces";
 import Pokedex from "./pages/Pokedex";
 import findMethod from "./controller/find";
@@ -88,6 +86,8 @@ function App() {
 
       <Router>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/"
             element={
@@ -102,8 +102,6 @@ function App() {
               />
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </Router>
     </>
