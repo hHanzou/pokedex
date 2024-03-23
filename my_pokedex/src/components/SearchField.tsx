@@ -6,18 +6,20 @@ interface SearchFormProps {
   pokemonName: string;
   setActiveIcons: React.Dispatch<React.SetStateAction<string[]>>;
   handlePokemonName: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: (event: React.FormEvent) => Promise<void>;
 }
+
+// TODO: remove buttonform style in css
+// TODO: more width in text input
+// TODO: create others pages
 
 const SearchForm: React.FC<SearchFormProps> = ({
   activeIcons,
   pokemonName,
   setActiveIcons,
-  handleSubmit,
   handlePokemonName,
 }) => {
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <div className="types-area">
         <div>
           <input type="hidden" name="bug" id="" />
@@ -171,7 +173,6 @@ const SearchForm: React.FC<SearchFormProps> = ({
           onChange={handlePokemonName}
           placeholder="Name"
         />
-        <button onClick={handleSubmit}>Find</button>
       </div>
     </form>
   );

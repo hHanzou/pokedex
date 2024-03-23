@@ -6,10 +6,13 @@ const findMethod = async (
   setHasPokemons: (value: React.SetStateAction<boolean>) => void,
   setPokemons: (value: React.SetStateAction<any[]>) => void
 ) => {
+  console.log("caiu aqui");
   if (pokemonName === "" && activeIcons.length === 0) {
-    getAllMethod(setHasPokemons, setPokemons);
+    console.log("getall");
+    return getAllMethod(setHasPokemons, setPokemons);
   }
   try {
+    console.log("caiu aqui2");
     const res = await fetch("http://localhost:3000/api/find", {
       method: "POST",
       headers: {
@@ -17,6 +20,7 @@ const findMethod = async (
       },
       body: JSON.stringify({ name: pokemonName, type: activeIcons }),
     });
+    console.log("passou");
 
     if (!res.ok) {
       setHasPokemons(false);

@@ -9,7 +9,8 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: ["http://localhost:5173", "http://127.0.0.1:5173"] }));
+app.use(accessControllMid);
 
 function capitalize(str) {
   if (str.length === 0) {
@@ -25,6 +26,7 @@ const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASS;
 
 // Conectando-se ao banco de dados MongoDB
+// .connect(`mongodb://localhost:27017/pokedex_db`, {})
 mongoose
   .connect(
     `mongodb+srv://${dbUser}:${dbPassword}@cluster0.bixs4ht.mongodb.net/pokedex_db`,
@@ -131,7 +133,7 @@ app.post("/auth/login", async (req, res) => {
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: trainer._id }, secret);
 
-    res.status(200).json({ msg: "auth done", token });
+    res.status(200).json({ msg: "auth done", id: trainer.id, token: token });
   } catch (err) {
     console.log(err);
     res.status(401).json({ msg: "server error, try again later" });
@@ -156,19 +158,35 @@ function checkToken(req, res, next) {
   }
 }
 
-// private route
-app.get("/trainer/:id", checkToken, async (req, res) => {
-  const id = req.params.id;
+// Access-Control-Allow-Origin
+function accessControllMid(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  ); // If needed
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  ); // If needed
+  res.setHeader("Access-Control-Allow-Credentials", true); // If needed
+  next();
+}
 
+// private route
+app.post("/trainer", checkToken, async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  const { id } = req.body;
+  console.log(id);
   // check if trainer exists
   try {
-    const trainer = await Trainer.findById(id, "-password");
+    const trainer = await Trainer.findById(id, { password: 0 });
 
     if (!trainer || trainer == null) {
       return res.status(404).json({ msg: "user not found" });
     }
-
-    res.status(200).json({ trainer });
+    console.log(trainer);
+    res.status(200).json(trainer);
   } catch (err) {
     console.log(err);
     return res.status(404).json({ msg: "user not found" });
@@ -177,6 +195,7 @@ app.get("/trainer/:id", checkToken, async (req, res) => {
 
 // return all pokemons
 app.post("/api/getall", async (req, res) => {
+  console.log("getall");
   try {
     const pokemon = await Pokemon.find(
       {},
@@ -195,6 +214,7 @@ app.post("/api/getall", async (req, res) => {
 
 // filter pokemons
 app.post("/api/find", async (req, res) => {
+  console.log("find");
   let data = req.body;
   console.log(data);
   //TYPE AND NAME
