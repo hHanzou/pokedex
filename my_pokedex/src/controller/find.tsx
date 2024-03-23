@@ -1,4 +1,3 @@
-import axios from "axios";
 import getAllMethod from "./getAll";
 
 const findMethod = async (
@@ -11,19 +10,22 @@ const findMethod = async (
     getAllMethod(setHasPokemons, setPokemons);
   }
   try {
-    const response = await axios.post("http://localhost:3000/api/find", {
-      name: pokemonName,
-      type: activeIcons,
+    const res = await fetch("http://localhost:3000/api/find", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: pokemonName, type: activeIcons }),
     });
 
-    if (response.status !== 200) {
+    if (!res.ok) {
       setHasPokemons(false);
       throw new Error("Erro ao fazer POST");
     }
 
     setHasPokemons(true);
-    const dataJson = response.data;
-    setPokemons(dataJson);
+    const dataJson = await res.json();
+    await setPokemons(dataJson);
     console.log(dataJson);
   } catch (err) {
     setHasPokemons(false);

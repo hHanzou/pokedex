@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import loginMethod from "../controller/login";
+import { AuthContext } from "../context/AuthContext";
 
 const LoginPage: React.FC = ({}) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { saveToken } = useContext(AuthContext);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -13,7 +15,7 @@ const LoginPage: React.FC = ({}) => {
       values[key] = value as string;
     });
     console.log(values);
-    loginMethod(values);
+    await loginMethod(values, saveToken);
   };
   return (
     <main>

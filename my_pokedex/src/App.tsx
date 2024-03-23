@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import React from "react";
+import { AuthProvider } from "./context/AuthContext";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -14,7 +15,6 @@ import RegisterPage from "./pages/Register";
 import "./App.css";
 
 function App() {
-  const [token, setToken] = useState("");
   const [activeIcons, setActiveIcons] = useState<string[]>([]);
   const [pokemonName, setPokemonName] = useState<string>("");
   const [hasFetchedData, setHasFetchedData] = useState(false);
@@ -22,21 +22,6 @@ function App() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 
   const currentPath = window.location.pathname;
-
-  const isUserAuthenticated = () => {
-    return localStorage.getItem("token") !== null;
-  };
-
-  const saveToken = (token: string) => {
-    localStorage.setItem("token", token);
-    setToken(token);
-  };
-
-  const removeToken = () => {
-    localStorage.removeItem("token");
-    localStorage.clear();
-    setToken("");
-  };
 
   const handlePokemonName = (event: ChangeEvent<HTMLInputElement>) => {
     setPokemonName(event.target.value);
@@ -86,22 +71,24 @@ function App() {
 
       <Router>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="/"
-            element={
-              <Pokedex
-                pokemons={pokemons}
-                activeIcons={activeIcons}
-                pokemonName={pokemonName}
-                hasPokemons={hasPokemons}
-                setActiveIcons={setActiveIcons}
-                handlePokemonName={handlePokemonName}
-                handleSubmit={handleSubmit}
-              />
-            }
-          />
+          <AuthProvider>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/"
+              element={
+                <Pokedex
+                  pokemons={pokemons}
+                  activeIcons={activeIcons}
+                  pokemonName={pokemonName}
+                  hasPokemons={hasPokemons}
+                  setActiveIcons={setActiveIcons}
+                  handlePokemonName={handlePokemonName}
+                  handleSubmit={handleSubmit}
+                />
+              }
+            />
+          </AuthProvider>
         </Routes>
       </Router>
     </>
