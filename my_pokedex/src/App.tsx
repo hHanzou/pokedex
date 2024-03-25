@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import pokeballImage from "./assets/pokeball.png";
 import Pokedex from "./pages/Pokedex";
 import LoginPage from "./pages/Login";
+import ProfilePage from "./pages/Profile";
 import RegisterPage from "./pages/Register";
 import "./App.css";
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage></LoginPage>,
+  },
+  {
+    path: "/profile",
+    element: <ProfilePage></ProfilePage>,
   },
   {
     path: "/register",
